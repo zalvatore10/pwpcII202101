@@ -3,7 +3,12 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express', author: 'Salvador', appName: 'webApp' });
+    res.render('index', {
+        title: 'Express',
+        author: 'Salvador',
+        appName: 'webApp',
+        company: 'Awson software'
+    });
 });
 
 /*AGREGANDO UNA NUEVA RUTA*/
