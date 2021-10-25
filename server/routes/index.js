@@ -1,19 +1,15 @@
-var express = require('express');
-var router = express.Router();
+// Importando el router home
+import homeRouter from './home';
+// Importando router de user
+import userRouter from './users';
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', {
-        title: 'Express',
-        author: 'Salvador',
-        appName: 'webApp',
-        company: 'Awson software'
-    });
-});
+// Agregando  las rutas de aplicacion 
+const addRoutes = (app) => {
+  app.use('/', homeRouter);
+  app.use('/users', userRouter);
+  return app;
+};
 
-/*AGREGANDO UNA NUEVA RUTA*/
-router.get('/greeting', function(req, res, next) {
-    res.status(200).json({ message: '!HOLA CAMPEON TU PUEDES CON ESTA MATERIA' })
-})
-
-module.exports = router;
+export default {
+  addRoutes,
+};
