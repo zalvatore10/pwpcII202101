@@ -4,3 +4,5 @@ dist-server
 #ignorando los archivos logs
 logs
 *.logs
+# ignorando archivo de configuracion
+.env

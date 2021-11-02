@@ -1,6 +1,6 @@
 {
   "presets": [
-      "minify",
+    "minify",
     [
       "@babel/preset-env",
       {
@@ -9,16 +9,16 @@
     ]
   ],
   "plugins": [
-      [
-          "module-resolver",
-          { 
-              "root":["./"],
-              "alias":{
-                  "@server":"./server",
-                  "@s-routes":"./server/routes",
-                  "@s-config":"./server/config"
-                }
-          }
-      ]
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@server": "./server",
+          "@s-routes": "./server/routes",
+          "@s-config": "./server/config"
+        }
+      }
+    ]
   ]
 }
