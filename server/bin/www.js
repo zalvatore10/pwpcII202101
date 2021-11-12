@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-import Winston from '@server/config/winston';
+import winston from '@server/config/winston';
 // Importando configuracion de aplicacion
 import configKeys from '@server/config/configKeys';
+// Importando la clase de conexion
+import MongooseODM from '@server/config/odm';
 
 /**
  * Module dependencies.
@@ -11,6 +13,7 @@ import http from 'http';
 import app from '../app';
 
 const debug = Debug('projnotes:server');
+
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -30,12 +33,15 @@ function normalizePort(val) {
 
   return false;
 }
+
 /**
  * Get port from environment and store inn Express.
  */
 
 const port = normalizePort(configKeys.port || '3000');
 app.set('port', port);
+
+const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
 /**
  * Event listener for HTTP server "error" event.
@@ -46,41 +52,58 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      Winston.error(`${bind} requires elevated privileges`);
+      winston.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      Winston.error(`${bind} is already in use`);
+      winston.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
       throw error;
   }
 }
+
 /**
  * Create HTTP server.
  */
 
 const server = http.createServer(app);
+
 /**
  * Event listener for HTTP server "listening" event.
  */
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on  ${bind}`);
+  const bindAdr =
+    typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug(`Listening on  ${bindAdr}`);
 }
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Creando el objeto conexion
  */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+const mongooseOdm = new MongooseODM(configKeys.databaseUrl);
+/**
+ * IIFE
+ */
+(async () => {
+  try {
+    const connectionResult = await mongooseOdm.connect();
+    if (connectionResult) {
+      winston.info('Connection to dabase has successfuly established');
+      /**
+       * Listen on provided port, on all network interfaces.
+       */
+      server.listen(port);
+      server.on('error', onError);
+      server.on('listening', onListening);
+    }
+  } catch (error) {
+    winston.error(`error when connectiong to Database: ${error.message}`);
+  }
+})();
