@@ -1,11 +1,17 @@
+/* Evita error de identacion en sidenav*/
+.sidenav li{
+    clear:both;
+}
 
-body{
-    padding:50px;
-    font: 14px "Lucida grande", Helvetica, arial, sans-serif;
+body {
+  padding: 50px;
+  font: 14px 'Lucida grande', Helvetica, arial, sans-serif;
 }
-a{
-    color:teal;
+
+a {
+  color: teal;
 }
+
 h1{
-    color:blue;
+    color:aqua;
 }
