@@ -104,6 +104,6 @@ const mongooseOdm = new MongooseODM(configKeys.databaseUrl);
       server.on('listening', onListening);
     }
   } catch (error) {
-    winston.error(`error when connectiong to Database: ${error.message}`);
+    winston.error(`Error when connecting to Database : ${error.message}`);
   }
 })();

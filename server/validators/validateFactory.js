@@ -11,12 +11,13 @@ const validator =
       const validData = await shape.validate(dataObject, { abortEarly: false });
       //se inyecta el objeto validado de la peticion
       req.validData = validData;
-      //se invoca le siguiente middleware de la cadena
-      return next();
     } catch (error) {
-      //en caso de error se regresa la info del error
-      return res.status(500).json({ error });
+      //en caso de error agregar el objeto de error de yub
+      // en la peticion
+      req.errorData = error;
     }
+    //se invoca le siguiente middleware de la cadena
+    return next();
   };
 
 //exportando el validador
